@@ -1,67 +1,82 @@
 
 function mouseEffect(targetId) {
+    //intial values
     this.target = document.getElementById(targetId)
+    this.targetRect = this.target.getBoundingClientRect()
     this.dataSection = document.getElementById('data')
     this.listenerState = false
-    const getData = (e) =>{
-        const data = {
-            target:this.target.offsetTop,
-            targetCenterX: this.target.offsetLeft + (this.target.offsetWidth / 2),
-            targetCenterY: this.target.offsetTop + (this.target.offsetHeight / 2),
-            mouseX:e.clientX,
-            mouseY:e.clientY
+    this.data ={
+        target: this.targetRect.top,
+        targetCenterX: this.targetRect.left + (this.targetRect.width / 2),
+        targetCenterY: this.targetRect.top + (this.targetRect.height / 2),
+        mouseX: this.targetCenterX,
+        mouseY: this.targetCenterY,
+    }
+    //intial values end
+    const getTargetData = () =>{
+        this.data = {
+            ...this.data,
+            target: this.targetRect.top,
+            targetCenterX: this.targetRect.left + (this.targetRect.width / 2),
+            targetCenterY: this.targetRect.top + (this.targetRect.height / 2),
         }
-        return data
+        //setData()
+    }
+    const getMouseData = (e) =>{
+        this.data = {
+            ...this.data,
+            mouseX: e.clientX,
+            mouseY: e.clientY,
+        }
+        //setData()
     }
     // use to display data being tracked
-    const setData = (data) => {
-        const {mouseX, mouseY, targetCenterX, targetCenterY, window, target} = data
+    const setData = () => {
+        const {mouseX, mouseY, targetCenterX, targetCenterY} = this.data
         this.dataSection.innerText = 
         `
         mouse location: ${mouseX}, ${mouseY} \n
         targetDimensions: ${targetCenterX}, ${targetCenterY}
         `
     }
-    
-    const rotateBox = (data) => {
-        const {mouseX, mouseY, targetCenterX, targetCenterY} = data; 
-        let x = (mouseX - targetCenterX) / 50
-        let y = (mouseY - targetCenterY) / 50
+    const rotateBox = () => {
+        const {mouseX, mouseY, targetCenterX, targetCenterY} = this.data; 
+        let x = (mouseX - targetCenterX) / 40
+        let y = (mouseY - targetCenterY) / 40
         this.target.style = `--x:${x}deg; --y:${y}deg;`
-        console.log('x:'+x+', y:'+y)
     }
-    const watchmouse = (e) => {
-        const data = getData(e)
-        setData(data)
-        rotateBox(data);
-    }
+    
     const cleanUp = () =>{
         this.target.style=null
     }
-     
-    
-    const watchPostion = () =>{
-        const targetRect = this.target.getBoundingClientRect()   
+
+    const watchPage = () =>{
+        this.targetRect = this.target.getBoundingClientRect()   
+        //console.log(this.targetRect)
         const windowHieght =  window.innerHeight
-        if( targetRect.y >= -1 && windowHieght >= targetRect.y){
+        const targetTop = this.targetRect.y        
+        const targetBottom = this.targetRect.y + this.targetRect.height
+        if( targetBottom >= -1 && windowHieght >= targetTop){
             if(this.listenerState) return
             this.listenerState = true
-            window.addEventListener('mousemove',watchmouse);
+            window.addEventListener('scroll',getTargetData);
+            window.addEventListener('scroll', rotateBox);  
+            window.addEventListener('mousemove', rotateBox);
+            window.addEventListener('mousemove',getMouseData);                      
             window.addEventListener('mouseout', cleanUp)
         }else{
             this.listenerState = false
-            window.removeEventListener('mousemove', watchmouse);
+            window.removeEventListener('scroll', rotateBox);
+            window.removeEventListener('mousemove', rotateBox);
             window.removeEventListener('mouseout', cleanUp)
         }
-    
     }
-    
-    this.intilize = window.addEventListener('scroll', watchPostion)
-    
+
+    this.intilize = window.addEventListener('scroll', watchPage)
 }
 
 
 const main = new mouseEffect('move-with-mouse')
 main.intilize
-
+console.log(main)
 
