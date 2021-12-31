@@ -8,8 +8,7 @@ body{
     background-position:left; 
 }
 #data{
-    border:1px red solid;
-    padding:10px;
+    padding-top:1000px;
     min-width:200px;
     margin:30px;
 }
@@ -28,4 +27,5 @@ body{
     box-shadow: 1px 7px 20px 0px rgba(0,0,0,0.75);
     -webkit-box-shadow: 1px 7px 20px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 1px 7px 20px 0px rgba(0,0,0,0.75);
+    margin-bottom:1000px;
 }
