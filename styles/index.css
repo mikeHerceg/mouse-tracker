@@ -3,6 +3,9 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgb(195,37,172);
+    background: radial-gradient(circle, rgba(195,37,172,1) 0%, rgba(0,212,255,1) 100%);
+    background-position:left; 
 }
 #data{
     border:1px red solid;
@@ -17,8 +20,12 @@ body{
     height:400px;
     width:400px;
     border-radius:10px;
-    background: rgb(195,37,172);
-    background: radial-gradient(circle, rgba(195,37,172,1) 0%, rgba(0,212,255,1) 100%);
+    padding:20px;
+    background:rgba(225,225, 225, .6);
+    background-blend-mode:blur(100);
     transition:.1s ease transform;
     transform:rotateX(var(--x))rotateZ(var(--z))rotateY(var(--y));
+    box-shadow: 1px 7px 20px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 1px 7px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 7px 20px 0px rgba(0,0,0,0.75);
 }

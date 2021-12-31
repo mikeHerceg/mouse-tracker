@@ -4,40 +4,32 @@ const mouse = document.onmousemove
 const dataSection = document.getElementById('data')
 
 
-function setData(data) {
-    const {mouseX, mouseY, targetX, targetY} = data
+const setData = (data) => {
+    const {mouseX, mouseY, targetCenterX, targetCenterY} = data
     dataSection.innerText = 
     `
     mouse location: ${mouseX}, ${mouseY} \n
-    targetDimensions: ${targetX}, ${targetY}
+    targetDimensions: ${targetCenterX}, ${targetCenterY}
     `
 }
-function rotateBox(data){
-    let x = (data.mouseX) / 50
-    if(data.mouseX < data.targetX){
-        x = -x
-    }
-
-    let y = (data.mouseY) / 50
-    if(data.mouseY > data.targetY){
-        y = -y
-    }
-
+const rotateBox = (data) => {
+    const {mouseX, mouseY, targetCenterX, targetCenterY} = data; 
+    let x = (mouseX - targetCenterX) / 50
+    let y = (mouseY - targetCenterY) / 50
     target.style = `--x:${x}deg; --y:${y}deg;`
     console.log(
         'x:'+x+', y:'+y
     )
 }
-function watchmouse(e){
+const watchmouse = (e) => {
     const data = {
-        targetX:target.offsetLeft + target.offsetWidth / 2,
-        targetY:target.offsetTop + target.offsetHeight / 2,
-        
+        targetCenterX:target.offsetLeft + target.offsetWidth / 2,
+        targetCenterY:target.offsetTop + target.offsetHeight / 2,
         mouseX:e.clientX,
         mouseY:e.clientY
-
     }
     setData(data)
     rotateBox(data);
 }
 window.addEventListener('mousemove', (e) => watchmouse(e) );
+window.addEventListener('mouseout',()=>target.style=null)
