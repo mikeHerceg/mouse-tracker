@@ -78,5 +78,4 @@ function mouseEffect(targetId) {
 
 const main = new mouseEffect('move-with-mouse')
 main.intilize
-console.log(main)
 
